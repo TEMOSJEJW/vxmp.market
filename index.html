@@ -4,146 +4,107 @@
 <meta charset="UTF-8">
 <title>Discord Widget</title>
 <style>
-html, body {
-    height: 100%;
+body {
     margin: 0;
-    padding: 0;
     background: #18191c;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    padding: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding-top: 40px;
 }
 
-/* Widget container */
-#discord-widget {
-    width: 600px; /* wider widget */
+/* Container */
+#discord-widget-container {
+    width: 100%;
+    max-width: 600px;
     background: #2C2F33;
-    color: white;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    transition: transform 0.3s;
+}
+#discord-widget-container:hover {
+    transform: translateY(-5px);
 }
 
 /* Banner */
-#discord-widget .banner img {
+#discord-widget-container .banner {
+    overflow: hidden;
+}
+#discord-widget-container .banner img {
     width: 100%;
-    height: 180px;
+    height: auto;
     object-fit: cover;
+    transition: transform 0.4s ease;
+}
+#discord-widget-container .banner img:hover {
+    transform: scale(1.05);
 }
 
 /* Header */
-#discord-widget .header {
+#discord-widget-container .header {
     display: flex;
     align-items: center;
     padding: 20px;
-    background:#23272A;
-}
-#discord-widget .header img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    margin-right: 20px;
-    object-fit: cover;
-}
-#discord-widget .header h3 {
-    margin: 0;
-    font-size: 1.6em;
-}
-#discord-widget .header a {
-    display: inline-block;
-    margin-top: 8px;
-    background:#7289DA;
-    color:white;
-    padding:6px 14px;
-    border-radius:6px;
-    text-decoration:none;
-    font-size:0.9em;
-    transition: background 0.2s;
-}
-#discord-widget .header a:hover {
-    background: #5b6eae;
-}
-
-/* Stats */
-#discord-widget .stats {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-    background: #2C2F33;
-    border-bottom: 1px solid #3a3d42;
-}
-#discord-widget .stats .stat {
-    text-align: center;
-}
-#discord-widget .stats .stat p {
-    margin: 5px 0;
-    font-weight: bold;
-}
-#discord-widget .stats .stat span {
-    display: block;
-    font-size: 1.1em;
-}
-
-/* Online Users List */
-#online-users {
-    list-style:none;
-    padding:15px;
-    max-height:300px;
-    overflow-y:auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-/* Online user card */
-.online-user {
-    display: flex;
-    align-items: center;
     background: #23272A;
-    border-radius: 10px;
-    padding: 8px 12px;
-    flex: 1 1 calc(50% - 10px);
-    transition: transform 0.2s, background 0.2s;
 }
-.online-user:hover {
-    transform: scale(1.03);
-    background: linear-gradient(90deg, #7289DA, #99AAB5);
-}
-.online-user img {
-    width: 36px;
-    height: 36px;
+#discord-widget-container .header img {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 15px;
     object-fit: cover;
+    transition: transform 0.3s;
 }
-
-/* Scrollbar */
-#online-users::-webkit-scrollbar {
-    width: 8px;
+#discord-widget-container .header img:hover {
+    transform: scale(1.1);
 }
-#online-users::-webkit-scrollbar-track {
-    background: #2C2F33;
-    border-radius: 4px;
+#discord-widget-container .header h3 {
+    margin: 0;
+    font-size: 1.4em;
+    color: #fff;
 }
-#online-users::-webkit-scrollbar-thumb {
+#discord-widget-container .header a {
+    display: inline-block;
+    margin-top: 6px;
     background: #7289DA;
-    border-radius: 4px;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85em;
+    transition: background 0.2s, transform 0.2s;
 }
-#online-users::-webkit-scrollbar-thumb:hover {
+#discord-widget-container .header a:hover {
     background: #5b6eae;
+    transform: scale(1.05);
 }
 
-/* Loading shimmer */
-@keyframes shimmer {0%{background-position:-400px 0}100%{background-position:400px 0}}
-.loading {background:#3a3d42; background-image:linear-gradient(90deg,#3a3d42 0px,#4b4e53 40px,#3a3d42 80px); background-size:400px 100%; animation:shimmer 1.5s infinite linear; border-radius:6px; color:transparent;}
-.loading-item {height:36px; width:100%; margin:6px 0; border-radius:8px; background:#3a3d42; background-image:linear-gradient(90deg,#3a3d42 0px,#4b4e53 40px,#3a3d42 80px); background-size:400px 100%; animation:shimmer 1.5s infinite linear;}
+/* Responsive iframe */
+#discord-widget-container iframe {
+    width: 100%;
+    height: 70vh;
+    min-height: 400px;
+    border: 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    #discord-widget-container .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    #discord-widget-container .header img {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+}
 </style>
 </head>
 <body>
 
-<div id="discord-widget">
+<div id="discord-widget-container">
     <!-- Banner -->
     <div class="banner">
         <img src="https://cdn.discordapp.com/attachments/1266739039172558901/1428690991002554478/05882c9f-f4d4-441a-b38d-6d52e8b2b195_showcase2.png?ex=68f36bac&is=68f21a2c&hm=a421f8a11e8e8f90369b8a1c8764a210fe6b62beea8f4ea6a88cb2c1ac3d3c49&" alt="Banner">
@@ -151,5 +112,19 @@ html, body {
 
     <!-- Header -->
     <div class="header">
-        <!-- Custom server PFP -->
-        <img id="server-icon" src="https://cdn.discordapp.com/attachments/1266739039172558901/142869
+        <img src="https://cdn.discordapp.com/attachments/1266739039172558901/1428690982014292009/05882c9f-f4d4-441a-b38d-6d52e8b2b195_showcase3.png?ex=68f36ba9&is=68f21a29&hm=4c30305193b1b9335f1fe7ae8feb063c6fd1bc6f2190c8c8e42f243fdee1c699&" alt="Server Icon">
+        <div>
+            <h3>Your Server Name</h3>
+            <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank">Join Server</a>
+        </div>
+    </div>
+
+    <!-- Discord widget iframe -->
+    <iframe src="https://discord.com/widget?id=1389215514198413425&theme=dark"
+            allowtransparency="true"
+            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
+    </iframe>
+</div>
+
+</body>
+</html>
