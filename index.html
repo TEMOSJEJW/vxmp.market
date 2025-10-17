@@ -1,24 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Copy Discord Invite</title>
+<meta charset="UTF-8">
+<title>Discord Widget</title>
+<style>
+body {
+    margin: 0;
+    background: #18191c;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Container */
+#discord-widget-container {
+    width: 100%;
+    max-width: 600px;
+    background: #2C2F33;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    transition: transform 0.3s;
+}
+#discord-widget-container:hover {
+    transform: translateY(-5px);
+}
+
+/* Banner */
+#discord-widget-container .banner img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+#discord-widget-container .banner img:hover {
+    transform: scale(1.05);
+}
+
+/* Header */
+#discord-widget-container .header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: #23272A;
+}
+#discord-widget-container .header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+#discord-widget-container .header img:hover {
+    transform: scale(1.1);
+}
+#discord-widget-container .header h3 {
+    margin: 0;
+    font-size: 1.4em;
+    color: #fff;
+}
+#discord-widget-container .header button {
+    display: inline-block;
+    margin-top: 6px;
+    background: #7289DA;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+#discord-widget-container .header button:hover {
+    background: #5b6eae;
+    transform: scale(1.05);
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    #discord-widget-container .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    #discord-widget-container .header img {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+}
+</style>
 </head>
 <body>
-    <button id="copyButton">Copy Discord Invite</button>
 
-    <script>
-        const button = document.getElementById('copyButton');
-        const inviteLink = "https://discord.com/app/invite-with-guild-onboarding/z4ZqcShAMD";
+<div id="discord-widget-container">
+    <!-- Banner -->
+    <div class="banner">
+        <img src="https://cdn.discordapp.com/attachments/1266739039172558901/1428690991002554478/05882c9f-f4d4-441a-b38d-6d52e8b2b195_showcase2.png" alt="Banner">
+    </div>
 
-        button.addEventListener('click', () => {
-            navigator.clipboard.writeText(inviteLink)
-                .then(() => {
-                    alert("Invite link copied to clipboard!");
-                })
-                .catch(err => {
-                    console.error("Failed to copy: ", err);
-                });
+    <!-- Header with pfp -->
+    <div class="header">
+        <img src="https://cdn.discordapp.com/attachments/1266739039172558901/1428690982014292009/05882c9f-f4d4-441a-b38d-6d52e8b2b195_showcase3.png" alt="Server Icon">
+        <div>
+            <h3>discord.gg/vxmp.market</h3>
+            <button id="copyInvite">Join Server</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const inviteButton = document.getElementById('copyInvite');
+const inviteLink = "https://discord.com/app/invite-with-guild-onboarding/z4ZqcShAMD";
+
+inviteButton.addEventListener('click', () => {
+    navigator.clipboard.writeText(inviteLink)
+        .then(() => {
+            inviteButton.textContent = "Copied!";
+            setTimeout(() => inviteButton.textContent = "Join Server", 1500);
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
         });
-    </script>
+});
+</script>
+
 </body>
 </html>
