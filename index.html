@@ -4,15 +4,14 @@
 <meta charset="UTF-8">
 <title>Discord Widget</title>
 <style>
-/* Center the widget on the page */
-body {
+html, body {
+    height: 100%;
     margin: 0;
+    padding: 0;
     background: #18191c; /* optional page background */
     display: flex;
-    justify-content: center;
-    align-items: flex-start; /* change to center for vertical centering */
-    min-height: 100vh;
-    padding-top: 50px; /* spacing from top */
+    justify-content: center; /* center horizontally */
+    align-items: center;     /* center vertically */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -117,7 +116,7 @@ body {
 </div>
 
 <script>
-const guildId = '1389215514198413425'; // Your server ID
+const guildId = '1389215514198413425';
 const widgetUrl = `https://discord.com/api/v9/guilds/${guildId}/widget.json`;
 
 async function updateWidget() {
@@ -125,13 +124,11 @@ async function updateWidget() {
         const res = await fetch(widgetUrl);
         const data = await res.json();
 
-        // Update server info
         document.getElementById('server-name').innerText = data.name;
         document.getElementById('server-name').classList.remove('loading');
         document.getElementById('server-icon').src = data.icon_url || 'https://i.imgur.com/6VBx3io.png';
         document.getElementById('server-link').href = data.instant_invite;
 
-        // Update stats
         const totalMembers = data.members.length;
         document.getElementById('members').innerText = `Total Members: ${totalMembers}`;
         document.getElementById('members').classList.remove('loading');
@@ -140,9 +137,8 @@ async function updateWidget() {
         document.getElementById('online').innerText = `Online Members: ${onlineMembers.length}`;
         document.getElementById('online').classList.remove('loading');
 
-        // Update online users list
         const onlineList = document.getElementById('online-users');
-        onlineList.innerHTML = ''; // Clear placeholder
+        onlineList.innerHTML = '';
 
         onlineMembers.forEach(member => {
             const li = document.createElement('li');
@@ -176,9 +172,9 @@ async function updateWidget() {
     }
 }
 
-// Initial load
 updateWidget();
-
-// Refresh every 30 seconds
 setInterval(updateWidget, 30000);
 </script>
+
+</body>
+</html>
