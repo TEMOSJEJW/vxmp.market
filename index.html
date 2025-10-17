@@ -1,60 +1,32 @@
-<div id="discord-widget" style="
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Discord Widget</title>
+<style>
+/* Center the widget on the page */
+body {
+    margin: 0;
+    background: #18191c; /* optional page background */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* change to center for vertical centering */
+    min-height: 100vh;
+    padding-top: 50px; /* spacing from top */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Discord widget container */
+#discord-widget {
     width: 360px;
     background: #2C2F33;
     color: white;
     border-radius: 14px;
     overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-">
-    <!-- Banner -->
-    <div style="width:100%; height:120px; overflow:hidden;">
-        <img src="https://cdn.discordapp.com/attachments/1266739039172558901/1428690991002554478/05882c9f-f4d4-441a-b38d-6d52e8b2b195_showcase2.png?ex=68f36bac&is=68f21a2c&hm=a421f8a11e8e8f90369b8a1c8764a210fe6b62beea8f4ea6a88cb2c1ac3d3c49&" 
-             style="width:100%; height:100%; object-fit:cover;">
-    </div>
+}
 
-    <!-- Header -->
-    <div style="display:flex; align-items:center; padding: 15px; background:#23272A;">
-        <img id="server-icon" src="" style="width:55px; height:55px; border-radius:50%; margin-right:15px; object-fit:cover;">
-        <div>
-            <h3 id="server-name" style="margin:0; font-size:1.3em;">Loading...</h3>
-            <a id="server-link" href="#" target="_blank" style="
-                display:inline-block;
-                margin-top:5px;
-                background:#7289DA;
-                color:white;
-                padding:5px 12px;
-                border-radius:5px;
-                text-decoration:none;
-                font-size:0.85em;
-                transition:background 0.2s;
-            " onmouseover="this.style.background='#5b6eae'" onmouseout="this.style.background='#7289DA'">Join Server</a>
-        </div>
-    </div>
-
-    <!-- Stats -->
-    <div style="padding:15px;">
-        <p id="members" class="loading" style="margin:5px 0;">Loading total members...</p>
-        <p id="online" class="loading" style="margin:5px 0;">Loading online members...</p>
-        <h4 style="margin-top:15px; font-size:1em;">Online Users:</h4>
-        <ul id="online-users" style="
-            list-style:none;
-            padding-left:0;
-            max-height:200px;
-            overflow-y:auto;
-            margin-top:5px;
-        ">
-            <!-- Placeholder items -->
-            <li class="loading-item"></li>
-            <li class="loading-item"></li>
-            <li class="loading-item"></li>
-            <li class="loading-item"></li>
-        </ul>
-    </div>
-</div>
-
-<style>
-/* Dark scrollbar */
+/* Dark scrollbar for online users */
 #online-users::-webkit-scrollbar {
     width: 8px;
 }
@@ -94,6 +66,55 @@
     animation: shimmer 1.5s infinite linear;
 }
 </style>
+</head>
+<body>
+
+<div id="discord-widget">
+    <!-- Banner -->
+    <div style="width:100%; height:120px; overflow:hidden;">
+        <img src="https://cdn.discordapp.com/attachments/1266739039172558901/1428690991002554478/05882c9f-f4d4-441a-b38d-6d52e8b2b195_showcase2.png?ex=68f36bac&is=68f21a2c&hm=a421f8a11e8e8f90369b8a1c8764a210fe6b62beea8f4ea6a88cb2c1ac3d3c49&" 
+             style="width:100%; height:100%; object-fit:cover;">
+    </div>
+
+    <!-- Header -->
+    <div style="display:flex; align-items:center; padding: 15px; background:#23272A;">
+        <img id="server-icon" src="" style="width:55px; height:55px; border-radius:50%; margin-right:15px; object-fit:cover;">
+        <div>
+            <h3 id="server-name" class="loading" style="margin:0; font-size:1.3em;">Loading...</h3>
+            <a id="server-link" href="#" target="_blank" style="
+                display:inline-block;
+                margin-top:5px;
+                background:#7289DA;
+                color:white;
+                padding:5px 12px;
+                border-radius:5px;
+                text-decoration:none;
+                font-size:0.85em;
+                transition:background 0.2s;
+            " onmouseover="this.style.background='#5b6eae'" onmouseout="this.style.background='#7289DA'">Join Server</a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div style="padding:15px;">
+        <p id="members" class="loading" style="margin:5px 0;">Loading total members...</p>
+        <p id="online" class="loading" style="margin:5px 0;">Loading online members...</p>
+        <h4 style="margin-top:15px; font-size:1em;">Online Users:</h4>
+        <ul id="online-users" style="
+            list-style:none;
+            padding-left:0;
+            max-height:200px;
+            overflow-y:auto;
+            margin-top:5px;
+        ">
+            <!-- Placeholder items -->
+            <li class="loading-item"></li>
+            <li class="loading-item"></li>
+            <li class="loading-item"></li>
+            <li class="loading-item"></li>
+        </ul>
+    </div>
+</div>
 
 <script>
 const guildId = '1389215514198413425'; // Your server ID
@@ -106,6 +127,7 @@ async function updateWidget() {
 
         // Update server info
         document.getElementById('server-name').innerText = data.name;
+        document.getElementById('server-name').classList.remove('loading');
         document.getElementById('server-icon').src = data.icon_url || 'https://i.imgur.com/6VBx3io.png';
         document.getElementById('server-link').href = data.instant_invite;
 
