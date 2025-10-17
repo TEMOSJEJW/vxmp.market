@@ -1,10 +1,162 @@
-<div style="width: 360px; height: 500px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-  <iframe 
-    src="https://discord.com/widget?id=1389215514198413425&theme=dark" 
-    width="100%" 
-    height="100%" 
-    allowtransparency="true" 
-    frameborder="0" 
-    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
-  </iframe>
+<div id="discord-widget" style="
+    width: 360px;
+    background: #2C2F33;
+    color: white;
+    border-radius: 14px;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+">
+    <!-- Banner -->
+    <div style="width:100%; height:120px; overflow:hidden;">
+        <img src="https://cdn.discordapp.com/attachments/1266739039172558901/1428690991002554478/05882c9f-f4d4-441a-b38d-6d52e8b2b195_showcase2.png?ex=68f36bac&is=68f21a2c&hm=a421f8a11e8e8f90369b8a1c8764a210fe6b62beea8f4ea6a88cb2c1ac3d3c49&" 
+             style="width:100%; height:100%; object-fit:cover;">
+    </div>
+
+    <!-- Header -->
+    <div style="display:flex; align-items:center; padding: 15px; background:#23272A;">
+        <img id="server-icon" src="" style="width:55px; height:55px; border-radius:50%; margin-right:15px; object-fit:cover;">
+        <div>
+            <h3 id="server-name" style="margin:0; font-size:1.3em;">Loading...</h3>
+            <a id="server-link" href="#" target="_blank" style="
+                display:inline-block;
+                margin-top:5px;
+                background:#7289DA;
+                color:white;
+                padding:5px 12px;
+                border-radius:5px;
+                text-decoration:none;
+                font-size:0.85em;
+                transition:background 0.2s;
+            " onmouseover="this.style.background='#5b6eae'" onmouseout="this.style.background='#7289DA'">Join Server</a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div style="padding:15px;">
+        <p id="members" class="loading" style="margin:5px 0;">Loading total members...</p>
+        <p id="online" class="loading" style="margin:5px 0;">Loading online members...</p>
+        <h4 style="margin-top:15px; font-size:1em;">Online Users:</h4>
+        <ul id="online-users" style="
+            list-style:none;
+            padding-left:0;
+            max-height:200px;
+            overflow-y:auto;
+            margin-top:5px;
+        ">
+            <!-- Placeholder items -->
+            <li class="loading-item"></li>
+            <li class="loading-item"></li>
+            <li class="loading-item"></li>
+            <li class="loading-item"></li>
+        </ul>
+    </div>
 </div>
+
+<style>
+/* Dark scrollbar */
+#online-users::-webkit-scrollbar {
+    width: 8px;
+}
+#online-users::-webkit-scrollbar-track {
+    background: #2C2F33;
+    border-radius: 4px;
+}
+#online-users::-webkit-scrollbar-thumb {
+    background: #7289DA;
+    border-radius: 4px;
+}
+#online-users::-webkit-scrollbar-thumb:hover {
+    background: #5b6eae;
+}
+
+/* Loading shimmer effect */
+@keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+}
+.loading {
+    background: #3a3d42;
+    background-image: linear-gradient(90deg, #3a3d42 0px, #4b4e53 40px, #3a3d42 80px);
+    background-size: 400px 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 6px;
+    color: transparent;
+}
+.loading-item {
+    height: 32px;
+    width: 100%;
+    margin: 6px 0;
+    border-radius: 8px;
+    background: #3a3d42;
+    background-image: linear-gradient(90deg, #3a3d42 0px, #4b4e53 40px, #3a3d42 80px);
+    background-size: 400px 100%;
+    animation: shimmer 1.5s infinite linear;
+}
+</style>
+
+<script>
+const guildId = '1389215514198413425'; // Your server ID
+const widgetUrl = `https://discord.com/api/v9/guilds/${guildId}/widget.json`;
+
+async function updateWidget() {
+    try {
+        const res = await fetch(widgetUrl);
+        const data = await res.json();
+
+        // Update server info
+        document.getElementById('server-name').innerText = data.name;
+        document.getElementById('server-icon').src = data.icon_url || 'https://i.imgur.com/6VBx3io.png';
+        document.getElementById('server-link').href = data.instant_invite;
+
+        // Update stats
+        const totalMembers = data.members.length;
+        document.getElementById('members').innerText = `Total Members: ${totalMembers}`;
+        document.getElementById('members').classList.remove('loading');
+
+        const onlineMembers = data.members.filter(m => m.status !== "offline");
+        document.getElementById('online').innerText = `Online Members: ${onlineMembers.length}`;
+        document.getElementById('online').classList.remove('loading');
+
+        // Update online users list
+        const onlineList = document.getElementById('online-users');
+        onlineList.innerHTML = ''; // Clear placeholder
+
+        onlineMembers.forEach(member => {
+            const li = document.createElement('li');
+            li.style.display = 'flex';
+            li.style.alignItems = 'center';
+            li.style.margin = '6px 0';
+            li.style.padding = '5px 8px';
+            li.style.borderRadius = '8px';
+            li.style.transition = 'background 0.2s, transform 0.2s';
+            li.onmouseover = () => { li.style.background = 'linear-gradient(90deg, #7289DA, #99AAB5)'; li.style.transform='scale(1.02)'; };
+            li.onmouseout = () => { li.style.background = 'transparent'; li.style.transform='scale(1)'; };
+
+            const avatar = document.createElement('img');
+            avatar.src = member.avatar_url || 'https://i.imgur.com/6VBx3io.png';
+            avatar.style.width = '32px';
+            avatar.style.height = '32px';
+            avatar.style.borderRadius = '50%';
+            avatar.style.marginRight = '10px';
+            avatar.style.objectFit = 'cover';
+
+            const username = document.createElement('span');
+            username.innerText = member.username;
+
+            li.appendChild(avatar);
+            li.appendChild(username);
+            onlineList.appendChild(li);
+        });
+
+    } catch (err) {
+        document.getElementById('discord-widget').innerHTML = '<p style="padding:15px;">Discord widget not available</p>';
+    }
+}
+
+// Initial load
+updateWidget();
+
+// Refresh every 30 seconds
+setInterval(updateWidget, 30000);
+</script>
