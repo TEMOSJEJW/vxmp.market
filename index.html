@@ -8,24 +8,118 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background: #18191c; /* optional page background */
+    background: #18191c;
     display: flex;
-    justify-content: center; /* center horizontally */
-    align-items: center;     /* center vertically */
+    justify-content: center;
+    align-items: flex-start;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 40px;
 }
 
-/* Discord widget container */
+/* Widget container */
 #discord-widget {
-    width: 360px;
+    width: 600px; /* wider widget */
     background: #2C2F33;
     color: white;
-    border-radius: 14px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 
-/* Dark scrollbar for online users */
+/* Banner */
+#discord-widget .banner img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* Header */
+#discord-widget .header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background:#23272A;
+}
+#discord-widget .header img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 20px;
+    object-fit: cover;
+}
+#discord-widget .header h3 {
+    margin: 0;
+    font-size: 1.6em;
+}
+#discord-widget .header a {
+    display: inline-block;
+    margin-top: 8px;
+    background:#7289DA;
+    color:white;
+    padding:6px 14px;
+    border-radius:6px;
+    text-decoration:none;
+    font-size:0.9em;
+    transition: background 0.2s;
+}
+#discord-widget .header a:hover {
+    background: #5b6eae;
+}
+
+/* Stats */
+#discord-widget .stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background: #2C2F33;
+    border-bottom: 1px solid #3a3d42;
+}
+#discord-widget .stats .stat {
+    text-align: center;
+}
+#discord-widget .stats .stat p {
+    margin: 5px 0;
+    font-weight: bold;
+}
+#discord-widget .stats .stat span {
+    display: block;
+    font-size: 1.1em;
+}
+
+/* Online Users List */
+#online-users {
+    list-style:none;
+    padding:15px;
+    max-height:300px;
+    overflow-y:auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Online user card */
+.online-user {
+    display: flex;
+    align-items: center;
+    background: #23272A;
+    border-radius: 10px;
+    padding: 8px 12px;
+    flex: 1 1 calc(50% - 10px);
+    transition: transform 0.2s, background 0.2s;
+}
+.online-user:hover {
+    transform: scale(1.03);
+    background: linear-gradient(90deg, #7289DA, #99AAB5);
+}
+.online-user img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+/* Scrollbar */
 #online-users::-webkit-scrollbar {
     width: 8px;
 }
@@ -41,78 +135,48 @@ html, body {
     background: #5b6eae;
 }
 
-/* Loading shimmer effect */
-@keyframes shimmer {
-    0% { background-position: -400px 0; }
-    100% { background-position: 400px 0; }
-}
-.loading {
-    background: #3a3d42;
-    background-image: linear-gradient(90deg, #3a3d42 0px, #4b4e53 40px, #3a3d42 80px);
-    background-size: 400px 100%;
-    animation: shimmer 1.5s infinite linear;
-    border-radius: 6px;
-    color: transparent;
-}
-.loading-item {
-    height: 32px;
-    width: 100%;
-    margin: 6px 0;
-    border-radius: 8px;
-    background: #3a3d42;
-    background-image: linear-gradient(90deg, #3a3d42 0px, #4b4e53 40px, #3a3d42 80px);
-    background-size: 400px 100%;
-    animation: shimmer 1.5s infinite linear;
-}
+/* Loading shimmer */
+@keyframes shimmer {0%{background-position:-400px 0}100%{background-position:400px 0}}
+.loading {background:#3a3d42; background-image:linear-gradient(90deg,#3a3d42 0px,#4b4e53 40px,#3a3d42 80px); background-size:400px 100%; animation:shimmer 1.5s infinite linear; border-radius:6px; color:transparent;}
+.loading-item {height:36px; width:100%; margin:6px 0; border-radius:8px; background:#3a3d42; background-image:linear-gradient(90deg,#3a3d42 0px,#4b4e53 40px,#3a3d42 80px); background-size:400px 100%; animation:shimmer 1.5s infinite linear;}
 </style>
 </head>
 <body>
 
 <div id="discord-widget">
     <!-- Banner -->
-    <div style="width:100%; height:120px; overflow:hidden;">
-        <img src="https://cdn.discordapp.com/attachments/1266739039172558901/1428690991002554478/05882c9f-f4d4-441a-b38d-6d52e8b2b195_showcase2.png?ex=68f36bac&is=68f21a2c&hm=a421f8a11e8e8f90369b8a1c8764a210fe6b62beea8f4ea6a88cb2c1ac3d3c49&" 
-             style="width:100%; height:100%; object-fit:cover;">
+    <div class="banner">
+        <img src="https://cdn.discordapp.com/attachments/1266739039172558901/1428690991002554478/05882c9f-f4d4-441a-b38d-6d52e8b2b195_showcase2.png?ex=68f36bac&is=68f21a2c&hm=a421f8a11e8e8f90369b8a1c8764a210fe6b62beea8f4ea6a88cb2c1ac3d3c49&" alt="Banner">
     </div>
 
     <!-- Header -->
-    <div style="display:flex; align-items:center; padding: 15px; background:#23272A;">
-        <img id="server-icon" src="" style="width:55px; height:55px; border-radius:50%; margin-right:15px; object-fit:cover;">
+    <div class="header">
+        <img id="server-icon" src="" alt="Server Icon">
         <div>
-            <h3 id="server-name" class="loading" style="margin:0; font-size:1.3em;">Loading...</h3>
-            <a id="server-link" href="#" target="_blank" style="
-                display:inline-block;
-                margin-top:5px;
-                background:#7289DA;
-                color:white;
-                padding:5px 12px;
-                border-radius:5px;
-                text-decoration:none;
-                font-size:0.85em;
-                transition:background 0.2s;
-            " onmouseover="this.style.background='#5b6eae'" onmouseout="this.style.background='#7289DA'">Join Server</a>
+            <h3 id="server-name" class="loading">Loading...</h3>
+            <a id="server-link" href="#" target="_blank">Join Server</a>
         </div>
     </div>
 
     <!-- Stats -->
-    <div style="padding:15px;">
-        <p id="members" class="loading" style="margin:5px 0;">Loading total members...</p>
-        <p id="online" class="loading" style="margin:5px 0;">Loading online members...</p>
-        <h4 style="margin-top:15px; font-size:1em;">Online Users:</h4>
-        <ul id="online-users" style="
-            list-style:none;
-            padding-left:0;
-            max-height:200px;
-            overflow-y:auto;
-            margin-top:5px;
-        ">
-            <!-- Placeholder items -->
-            <li class="loading-item"></li>
-            <li class="loading-item"></li>
-            <li class="loading-item"></li>
-            <li class="loading-item"></li>
-        </ul>
+    <div class="stats">
+        <div class="stat">
+            <p>Total Members</p>
+            <span id="members" class="loading">...</span>
+        </div>
+        <div class="stat">
+            <p>Online Members</p>
+            <span id="online" class="loading">...</span>
+        </div>
     </div>
+
+    <!-- Online Users -->
+    <ul id="online-users">
+        <li class="loading-item"></li>
+        <li class="loading-item"></li>
+        <li class="loading-item"></li>
+        <li class="loading-item"></li>
+    </ul>
 </div>
 
 <script>
@@ -130,11 +194,11 @@ async function updateWidget() {
         document.getElementById('server-link').href = data.instant_invite;
 
         const totalMembers = data.members.length;
-        document.getElementById('members').innerText = `Total Members: ${totalMembers}`;
-        document.getElementById('members').classList.remove('loading');
-
         const onlineMembers = data.members.filter(m => m.status !== "offline");
-        document.getElementById('online').innerText = `Online Members: ${onlineMembers.length}`;
+
+        document.getElementById('members').innerText = totalMembers;
+        document.getElementById('members').classList.remove('loading');
+        document.getElementById('online').innerText = onlineMembers.length;
         document.getElementById('online').classList.remove('loading');
 
         const onlineList = document.getElementById('online-users');
@@ -142,22 +206,10 @@ async function updateWidget() {
 
         onlineMembers.forEach(member => {
             const li = document.createElement('li');
-            li.style.display = 'flex';
-            li.style.alignItems = 'center';
-            li.style.margin = '6px 0';
-            li.style.padding = '5px 8px';
-            li.style.borderRadius = '8px';
-            li.style.transition = 'background 0.2s, transform 0.2s';
-            li.onmouseover = () => { li.style.background = 'linear-gradient(90deg, #7289DA, #99AAB5)'; li.style.transform='scale(1.02)'; };
-            li.onmouseout = () => { li.style.background = 'transparent'; li.style.transform='scale(1)'; };
+            li.className = 'online-user';
 
             const avatar = document.createElement('img');
             avatar.src = member.avatar_url || 'https://i.imgur.com/6VBx3io.png';
-            avatar.style.width = '32px';
-            avatar.style.height = '32px';
-            avatar.style.borderRadius = '50%';
-            avatar.style.marginRight = '10px';
-            avatar.style.objectFit = 'cover';
 
             const username = document.createElement('span');
             username.innerText = member.username;
@@ -167,14 +219,13 @@ async function updateWidget() {
             onlineList.appendChild(li);
         });
 
-    } catch (err) {
-        document.getElementById('discord-widget').innerHTML = '<p style="padding:15px;">Discord widget not available</p>';
+    } catch(err) {
+        document.getElementById('discord-widget').innerHTML = '<p style="padding:20px;">Discord widget not available</p>';
     }
 }
 
 updateWidget();
 setInterval(updateWidget, 30000);
 </script>
-
 </body>
 </html>
